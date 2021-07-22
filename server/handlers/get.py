@@ -7,6 +7,7 @@ from marshmallow.exceptions import ValidationError
 
 from .headers import HEADERS
 from . import schemas
+from .. import storage
 
 def get_handler() -> (Tuple[Any, int, Dict[str, str]]):
     '''
@@ -18,5 +19,9 @@ def get_handler() -> (Tuple[Any, int, Dict[str, str]]):
         data = schemas.GET.load(json_data)
     except ValidationError as err:
         return err.messages, 400, HEADERS
-    print(data)
-    return 'OK', 201, HEADERS
+    value, message = storage.get(data['KEY'])
+    res = {
+        'message': message,
+        'value': value
+    }
+    return res, 201, HEADERS
