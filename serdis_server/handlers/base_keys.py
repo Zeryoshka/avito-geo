@@ -29,7 +29,9 @@ def get_handler() -> (Tuple[Any, int, Dict[str, str]]):
         'message': message,
         'value': value
     }
-    return res, 201, HEADERS
+    if value is None:
+        return res, 400, HEADERS
+    return res, 200, HEADERS
 
 def set_handler() -> (Tuple[Any, int, Dict[str, str]]):
     '''
@@ -40,7 +42,7 @@ def set_handler() -> (Tuple[Any, int, Dict[str, str]]):
         data = schemas.SET.load(json_data)
     except ValidationError as err:
         res = {
-            'value': None,
+            'is_created': False,
             'message': err.messages
         }
         return res, 400, HEADERS
