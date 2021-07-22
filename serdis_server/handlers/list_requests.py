@@ -56,4 +56,6 @@ def lget_handler() -> (Tuple[Any, int, Dict[str, str]]):
         'message': message,
         'value': value
     }
-    return res, 201, HEADERS
+    if value is None:
+        return res, 400, HEADERS
+    return res, 200, HEADERS
