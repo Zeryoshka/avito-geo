@@ -1,15 +1,18 @@
-from serdis_server.storage_package import Storage
 from time import sleep
+import pytest
+from serdis_server.storage_package import Storage
 
-def test_storage_set_and_get():
-    storage = Storage()
+@pytest.fixture
+def storage():
+    return Storage()
+
+def test_storage_set_and_get(storage):
     created, _ = storage.set('key1', 'value1')
     assert created
     value, _ = storage.get('key1')
     assert value == 'value1'
 
-def test_storage_many_set_and_get():
-    storage = Storage()
+def test_storage_many_set_and_get(storage):
     created, _ = storage.set('key1', 'value1')
     assert created
     created, _ = storage.set('key2', 'value2')
@@ -25,9 +28,7 @@ def test_storage_many_set_and_get():
     value, _ = storage.get('key3')
     assert value is None
 
-def test_storage_many_set_and_get_with_tll():
-    storage = Storage()
-    
+def test_storage_many_set_and_get_with_tll(storage):
     created, _ = storage.set('key1', 'value1', 3)
     assert created
     created, _ = storage.set('key2', 'value2', 2)
@@ -46,8 +47,7 @@ def test_storage_many_set_and_get_with_tll():
     value, _ = storage.get('key2')
     assert value is None
 
-def test_storage_lset_and_lget():
-    storage = Storage()
+def test_storage_lset_and_lget(storage):
     created, _ = storage.lset('key1', ['value1', 'value2', 'value3', 'value4'])
     assert created
     value, _ = storage.get('key2')
@@ -55,8 +55,7 @@ def test_storage_lset_and_lget():
     value, _ = storage.lget('key1')
     assert value == ['value1', 'value2', 'value3', 'value4']
 
-def test_storage_lset_and_lget_ttl():
-    storage = Storage()
+def test_storage_lset_and_lget_ttl(storage):
     created, _ = storage.lset('key1', ['value1', 'value2', 'value3', 'value4'], 1)
     assert created
     value, _ = storage.lget('key1')
@@ -65,8 +64,7 @@ def test_storage_lset_and_lget_ttl():
     value, _ = storage.lget('key1')
     assert value is None
 
-def test_storage_combi_set():
-    storage = Storage()
+def test_storage_combi_set(storage):
     created, _ = storage.lset('key1', ['1', '2', '3', '4'])
     assert created
     created, _ = storage.set('key1', '23')
