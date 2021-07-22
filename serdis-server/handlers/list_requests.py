@@ -1,5 +1,5 @@
 '''
-module with handler for LSET and stuff for it
+module with handler for list data-structure and stuff for it
 '''
 from typing import Any, Dict, Tuple
 from flask import request
