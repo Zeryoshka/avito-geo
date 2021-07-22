@@ -1,4 +1,3 @@
-from serdis_server.storage_package.data_structures import Value
 from serdis_server.storage_package import Storage
 from time import sleep
 
