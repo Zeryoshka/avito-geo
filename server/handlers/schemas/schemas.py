@@ -15,7 +15,7 @@ class SetSchema(Schema):
     '''
     KEY = KeyValidator(required=True)
     VALUE = String(required=True, validate=NoneOf(['']))
-    TTS = Int(validate=Range(min=1))
+    TTL = Int(validate=Range(min=1))
 
 
 class GetSchema(Schema):
