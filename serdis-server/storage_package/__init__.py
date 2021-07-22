@@ -3,7 +3,7 @@ Init module of storage package
 '''
 
 from typing import Tuple
-from .data_structures import Value
+from .data_structures import Value, ValueList
 
 
 class Storage():
@@ -17,6 +17,15 @@ class Storage():
         '''
         self.values = dict()
 
+    def _is_key_exist_for_other_type(self, key: str, type_: type) -> (bool):
+        '''
+        Return True if key already exist for other data structure
+        '''
+        return (
+            key in self.values and 
+            not isinstance(self.values[key], type_)
+        )
+
     def set(self, key: str, value: str, ttl: int = None):
         '''
         set Value by key, make pair key-value in storage,
@@ -28,8 +37,9 @@ class Storage():
             is_created: bool
             message: str
         '''
-        if (key in self.values) and (not isinstance(self.values[key], Value)):
+        if self._is_key_exist_for_other_type(key, Value):
             return False, f'key "{key}" already uses for other datastructure'
+        
         self.values[key] = Value(value, ttl)
         return True, 'Ok'
 
@@ -51,3 +61,22 @@ class Storage():
         if not isinstance(value, Value):
             return None, 'Is not a string value'
         return value.value, 'Ok'
+    
+    def lset(self, key: str, value: str, ttl: int = None):
+        '''
+        set List by key, make pair key-value in storage,
+        can set TTL if ttl not is None
+
+        if key uses for other type of datastructure returns errors message
+
+        Returns: tuple with
+            is_created: bool
+            message: str
+        '''
+
+        if self._is_key_exist_for_other_type(key, ValueList):
+            return False, f'key "{key}" already uses for other datastructure'
+        
+        self.values[key] = ValueList(value, ttl)
+        return True, 'Ok'
+
