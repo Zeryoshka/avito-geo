@@ -27,8 +27,15 @@ class GetSchema(Schema):
 
 class LsetSchema(Schema):
     '''
-    SET-request schema
+    LSET-request schema
     '''
     KEY = KeyValidator(required=True)
     VALUE = List(String(), required=True, validate=Length(min=1))
     TTL = Int(validate=Range(min=1))
+
+
+class LsetSchema(Schema):
+    '''
+    LSET-request schema
+    '''
+    KEY = KeyValidator(required=True)
