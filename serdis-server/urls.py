@@ -9,7 +9,7 @@ app.add_url_rule(
     '/ping',
     'PING',
     ping_handler,
-    methods=['POST']
+    methods=['GET']
 )
 
 app.add_url_rule(
