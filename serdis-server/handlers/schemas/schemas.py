@@ -34,7 +34,7 @@ class LsetSchema(Schema):
     TTL = Int(validate=Range(min=1))
 
 
-class LsetSchema(Schema):
+class LgetSchema(Schema):
     '''
     LSET-request schema
     '''
