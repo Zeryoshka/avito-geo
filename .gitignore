@@ -2,3 +2,4 @@ venv/
 test-venv/
 __pycache__/
 .coverage
+client-venv/
