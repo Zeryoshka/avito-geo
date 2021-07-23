@@ -43,3 +43,11 @@ pytest --cov=serdis_server -v
 ```bash
 pip install -r client-requirements.txt
 ```
+
+## Развертывание приложения
+Для того, чтобы развернуть приложение сервера достаточно выполнить команду:
+```bash
+docker-compose up
+```
+При этом сервер запустится на порту 5000
+
