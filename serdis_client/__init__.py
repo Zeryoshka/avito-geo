@@ -84,5 +84,5 @@ class Serdis():
         key = str(key)
         if not is_valid_key(key):
             return None
-        value = requests.post(self.adress + 'get', json={'KEY': key}).json()['value']
+        value = requests.post(self.adress + 'lget', json={'KEY': key}).json()['value']
         return value
