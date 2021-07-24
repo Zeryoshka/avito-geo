@@ -2,7 +2,7 @@
 Init module of storage package
 '''
 
-from typing import Tuple
+from typing import List, Tuple
 from .data_structures import Value, ValueList
 
 
@@ -98,3 +98,19 @@ class Storage():
             message: str
         '''
         return self._get_validator(key, ValueList)
+
+    def keys(self) -> (List[str]):
+        '''
+        get all keys and return it.
+
+        Returns: 
+            list of str with keys
+        '''
+        keys = []
+        for key, value in list(self.values.items()):
+            if value.is_alive:
+                keys.append(key)
+            else:
+                del self.values[key]
+                print(self.values.keys())
+        return keys

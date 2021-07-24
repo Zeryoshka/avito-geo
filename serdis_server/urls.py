@@ -4,7 +4,8 @@ Module with connection handlers to app
 
 from . import app
 from .handlers import ping_handler, \
-    set_handler, get_handler, lset_handler, lget_handler
+    set_handler, get_handler, lset_handler, lget_handler, \
+    keys_handler
 
 app.add_url_rule(
     '/ping',
@@ -39,4 +40,11 @@ app.add_url_rule(
     'LGET',
     lget_handler,
     methods=['POST']
+)
+
+app.add_url_rule(
+    '/keys',
+    'KEYS',
+    keys_handler,
+    methods=['GET']
 )
