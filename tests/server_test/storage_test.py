@@ -71,3 +71,42 @@ def test_storage_combi_set(storage):
     assert not created
     value, _ = storage.get('key1')
     assert value is None
+
+def test_storage_keys(storage):
+    true_keys = []
+    for i in range(3):
+        storage.set(f'key{i}', f'{i}')
+        true_keys.append(f'key{i}')
+    storage.lset('list', ['1', '2', '3'])
+    true_keys.append('list')
+
+    keys = storage.keys()
+    assert set(keys) == set(true_keys)
+    storage.set('key4', '4', 2)
+    true_keys.append('key4')
+    keys = storage.keys()
+    assert set(keys) == set(true_keys)
+    sleep(2)
+    del true_keys[-1]
+    keys = storage.keys()
+    assert set(keys) == set(true_keys)
+
+def test_storage_delete(storage):
+    true_keys = []
+    for i in range(10):
+        storage.set(f'key{i}', f'{i}')
+        true_keys.append(f'key{i}')
+    
+    deleted, _ = storage.delete('key9')
+    del true_keys[-1]
+    assert deleted and set(storage.keys()) == set(true_keys)
+
+    deleted, _ = storage.delete('key10')
+    assert not deleted and set(storage.keys()) == set(true_keys)
+
+    storage.set('key10', '10', 1)
+    sleep(1)
+    deleted, _ = storage.delete('key10')
+    assert not deleted and set(storage.keys()) == set(true_keys)
+
+
