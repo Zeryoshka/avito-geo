@@ -120,7 +120,7 @@ class Storage():
                 print(self.values.keys())
         return keys
     
-    def del(self, key: str) -> (Tuple[bool, str]):
+    def delete(self, key: str) -> (Tuple[bool, str]):
         '''
         del key if it exists
         Returns:

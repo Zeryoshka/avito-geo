@@ -18,4 +18,27 @@ def keys_handler() -> (Tuple[Any, int, Dict[str, str]]):
     res = {
         'keys': storage.keys()
     }
+    return res, 200, HEADERS
+
+def del_handler() -> (Tuple[Any, int, Dict[str, str]]):
+    '''
+    Handler for DEL query - query for deleting key from storage
+    '''
+    json_data = request.get_json()
+    try:
+        data = schemas.DEL.load(json_data)
+    except ValidationError as err:
+        res = {
+            'is_deleted': False,
+            'message': err.messages
+        }
+        return res, 400, HEADERS
+    
+    deleted, message = storage.delete(data['KEY'])
+    res = {
+        'is_created': deleted,
+        'message': message
+    }
+    if deleted:
+        return res, 200, HEADERS
     return res, 400, HEADERS
