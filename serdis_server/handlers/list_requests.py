@@ -46,7 +46,7 @@ def lget_handler() -> (Tuple[Any, int, Dict[str, str]]):
         data = schemas.LGET.load(json_data)
     except ValidationError as err:
         res = {
-            'is_created': False,
+            'value': None,
             'message': err.messages
         }
         return res, 400, HEADERS

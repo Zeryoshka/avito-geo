@@ -36,7 +36,7 @@ def del_handler() -> (Tuple[Any, int, Dict[str, str]]):
     
     deleted, message = storage.delete(data['KEY'])
     res = {
-        'is_created': deleted,
+        'is_deleted': deleted,
         'message': message
     }
     if deleted:
