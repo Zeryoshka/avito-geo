@@ -3,7 +3,7 @@ Module with handlers for all data-structures
 '''
 
 from . import schemas
-from .headers import HEADERS
+from .headers import HEADERS, TEXT_HEADERS
 from .. import storage
 
 from typing import Any, Dict, Tuple
@@ -42,3 +42,9 @@ def del_handler() -> (Tuple[Any, int, Dict[str, str]]):
     if deleted:
         return res, 200, HEADERS
     return res, 400, HEADERS
+
+def ping_handler() -> (Tuple[Any, int, Dict[str, str]]):
+    '''
+    Handler for PING request (checking server connection)
+    '''
+    return 'PONG', 200, TEXT_HEADERS
