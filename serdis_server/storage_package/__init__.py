@@ -2,7 +2,8 @@
 Init module of storage package
 '''
 
-from typing import List, Tuple
+from typing import Any, List, Tuple
+
 from .data_structures import Value, ValueList
 
 
@@ -27,9 +28,13 @@ class Storage():
         )
 
 
-    def _get_validator(self, key: str, type_: type):
+    def _get_validator(self, key: str, type_: type) -> (Tuple[Any, str]):
         '''
         Validator get-requests(GET, LGET, HGET)
+
+        Returns:
+            Value - Value of type_ or None
+            Message - str
         '''
         if key not in self.values:
             return None, 'Key is not exist'
@@ -41,7 +46,7 @@ class Storage():
             return None, 'Value mismatch'
         return value.value, 'Ok'
 
-    def set(self, key: str, value: str, ttl: int = None):
+    def set(self, key: str, value: str, ttl: int = None) -> (Tuple[bool, str]):
         '''
         set Value by key, make pair key-value in storage,
         can set TTL if ttl not is None
@@ -69,7 +74,7 @@ class Storage():
         '''
         return self._get_validator(key, Value)
     
-    def lset(self, key: str, value: str, ttl: int = None):
+    def lset(self, key: str, value: str, ttl: int = None) -> (Tuple[bool, str]):
         '''
         set List by key, make pair key-value in storage,
         can set TTL if ttl not is None
@@ -86,7 +91,7 @@ class Storage():
         self.values[key] = ValueList(value, ttl)
         return True, 'Ok'
 
-    def lget(self, key: str):
+    def lget(self, key: str) -> (Tuple[List[str], str]):
         '''
         set List by key, make pair key-value in storage,
         can set TTL if ttl not is None
@@ -94,8 +99,8 @@ class Storage():
         if key uses for other type of datastructure returns errors message
 
         Returns: tuple with
-            is_created: bool
-            message: str
+            value - list of str or None
+            message - str
         '''
         return self._get_validator(key, ValueList)
 
@@ -114,3 +119,15 @@ class Storage():
                 del self.values[key]
                 print(self.values.keys())
         return keys
+    
+    def del(self, key: str) -> (Tuple[bool, str]):
+        '''
+        del key if it exists
+        Returns:
+            is_deleted - (boole) True if deleted
+            message - (str) 
+        '''
+        if key in self.values:
+            del self.values[key]
+            return True, 'Ok'
+        return False, 'Key is not exist'
