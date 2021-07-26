@@ -39,3 +39,9 @@ class LgetSchema(Schema):
     LSET-request schema
     '''
     KEY = KeyValidator(required=True)
+
+class DelSchema(Schema):
+    '''
+    DEL-request schema
+    '''
+    KEY = KeyValidator(required=True)
