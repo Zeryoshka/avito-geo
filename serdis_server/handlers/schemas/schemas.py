@@ -40,6 +40,7 @@ class LgetSchema(Schema):
     '''
     KEY = KeyValidator(required=True)
 
+
 class DelSchema(Schema):
     '''
     DEL-request schema

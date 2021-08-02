@@ -20,6 +20,7 @@ def keys_handler() -> (Tuple[Any, int, Dict[str, str]]):
     }
     return res, 200, HEADERS
 
+
 def del_handler() -> (Tuple[Any, int, Dict[str, str]]):
     '''
     Handler for DEL query - query for deleting key from storage
@@ -33,7 +34,7 @@ def del_handler() -> (Tuple[Any, int, Dict[str, str]]):
             'message': err.messages
         }
         return res, 400, HEADERS
-    
+
     deleted, message = storage.delete(data['KEY'])
     res = {
         'is_deleted': deleted,
@@ -42,6 +43,7 @@ def del_handler() -> (Tuple[Any, int, Dict[str, str]]):
     if deleted:
         return res, 200, HEADERS
     return res, 400, HEADERS
+
 
 def ping_handler() -> (Tuple[Any, int, Dict[str, str]]):
     '''

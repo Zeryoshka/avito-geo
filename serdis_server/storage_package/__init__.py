@@ -23,10 +23,9 @@ class Storage():
         Return True if key already exist for other data structure
         '''
         return (
-            key in self._values and 
+            key in self._values and
             not isinstance(self._values[key], type_)
         )
-
 
     def _get_validator(self, key: str, type_: type) -> (Tuple[Any, str]):
         '''
@@ -59,7 +58,7 @@ class Storage():
         '''
         if self._is_key_exist_for_other_type(key, Value):
             return False, f'key "{key}" already uses for other datastructure'
-        
+
         self._values[key] = Value(value, ttl)
         return True, 'Ok'
 
@@ -68,13 +67,15 @@ class Storage():
         Get Value by key if it's exist and alive
         If key is not exist, is not alive or has mismatch in type returns None
 
-        Returns: 
+        Returns:
             value - str
             message - str
         '''
         return self._get_validator(key, Value)
-    
-    def lset(self, key: str, value: str, ttl: int = None) -> (Tuple[bool, str]):
+
+    def lset(
+        self, key: str, value: str, ttl: int = None
+    ) -> (Tuple[bool, str]):
         '''
         set List by key, make pair key-value in storage,
         can set TTL if ttl not is None
@@ -87,7 +88,7 @@ class Storage():
         '''
         if self._is_key_exist_for_other_type(key, ValueList):
             return False, f'key "{key}" already uses for other datastructure'
-        
+
         self._values[key] = ValueList(value, ttl)
         return True, 'Ok'
 
@@ -108,7 +109,7 @@ class Storage():
         '''
         get all keys and return it.
 
-        Returns: 
+        Returns:
             list of str with keys
         '''
         keys = []
@@ -119,13 +120,13 @@ class Storage():
                 del self._values[key]
                 print(self._values.keys())
         return keys
-    
+
     def delete(self, key: str) -> (Tuple[bool, str]):
         '''
         del key if it exists
         Returns:
             is_deleted - (boole) True if deleted
-            message - (str) 
+            message - (str)
         '''
         if key in self._values:
             if self._values[key].is_alive:

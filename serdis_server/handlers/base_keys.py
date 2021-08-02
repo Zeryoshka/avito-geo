@@ -10,12 +10,13 @@ from .headers import HEADERS
 from . import schemas
 from .. import storage
 
+
 def get_handler() -> (Tuple[Any, int, Dict[str, str]]):
     '''
     handler for GET request (get key-value pair)
     '''
     json_data = request.get_json()
-    
+
     try:
         data = schemas.GET.load(json_data)
     except ValidationError as err:
@@ -32,6 +33,7 @@ def get_handler() -> (Tuple[Any, int, Dict[str, str]]):
     if value is None:
         return res, 400, HEADERS
     return res, 200, HEADERS
+
 
 def set_handler() -> (Tuple[Any, int, Dict[str, str]]):
     '''
@@ -51,7 +53,7 @@ def set_handler() -> (Tuple[Any, int, Dict[str, str]]):
         ttl = data['TTL']
     else:
         ttl = None
-    
+
     created, message = storage.set(data['KEY'], data['VALUE'], ttl)
     res = {
         'is_created': created,
