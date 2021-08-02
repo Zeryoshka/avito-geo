@@ -5,3 +5,4 @@ COPY serdis_server /code/serdis_server
 COPY requirements.txt /code/
 WORKDIR /code
 RUN pip install --no-cache-dir -r requirements.txt
+CMD [ "python", "-m", "serdis_server" ]
