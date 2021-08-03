@@ -68,7 +68,7 @@ class Storage():
         If key is not exist, is not alive or has mismatch in type returns None
 
         Returns:
-            value - str
+            value - str or None
             message - str
         '''
         return self._get_validator(key, Value)
@@ -125,8 +125,8 @@ class Storage():
         '''
         del key if it exists
         Returns:
-            is_deleted - (boole) True if deleted
-            message - (str)
+            is_deleted - (bool) True if deleted
+            message - str
         '''
         if key in self._values:
             if self._values[key].is_alive:
