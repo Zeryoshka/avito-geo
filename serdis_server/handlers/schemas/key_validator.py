@@ -6,7 +6,9 @@ from marshmallow.fields import String
 from marshmallow import ValidationError
 import re
 
+
 KEY_TEMPLATE = r'[a-zA-Z_][a-zA-Z0-9_]*'
+
 
 class KeyValidator(String):
     '''
@@ -19,5 +21,7 @@ class KeyValidator(String):
             raise error
 
         if re.fullmatch(KEY_TEMPLATE, result) is None:
-            raise ValidationError(f'is not agree with template: {KEY_TEMPLATE}')
+            raise ValidationError(
+                f'is not agree with template: {KEY_TEMPLATE}'
+            )
         return result

@@ -2,8 +2,8 @@
 Description of data stuctures imlemented in project
 '''
 
-from typing import Any
 from datetime import datetime, timedelta
+
 
 class Value():
     '''

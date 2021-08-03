@@ -28,7 +28,7 @@ def lset_handler() -> (Tuple[Any, int, Dict[str, str]]):
         ttl = data['TTL']
     else:
         ttl = None
-    
+
     created, message = storage.lset(data['KEY'], data['VALUE'], ttl)
     res = {
         'is_created': created,
@@ -50,7 +50,7 @@ def lget_handler() -> (Tuple[Any, int, Dict[str, str]]):
             'message': err.messages
         }
         return res, 400, HEADERS
-    
+
     value, message = storage.lget(data['KEY'])
     res = {
         'message': message,
