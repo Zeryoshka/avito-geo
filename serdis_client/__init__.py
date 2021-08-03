@@ -16,7 +16,7 @@ class Serdis():
         Consructor of Serdis class
         '''
         self._address = f'http://{host}:{port}/'
-    
+
     def ping(self) -> (str):
         '''
         Method for PING query
@@ -34,23 +34,26 @@ class Serdis():
         '''
         key = str(key)
         if not is_valid_key(key):
-            return None
-        data_json = requests.post(self._address + 'get', json={'KEY': key}).json()
+            return None, 'invalid key'
+        data_json = requests.post(
+            self._address + 'get', json={'KEY': key}
+        ).json()
         return data_json['value'], data_json['message']
-    
+
     def set(self, key: str, value: str, ttl: int = None) -> (Tuple[bool, str]):
         '''
         Method for setting values (SET)
         ttl - live time in seconds
 
         Returns: Tuple of
-            is_created - True(bool) if can create or update value by key, or False if can not
+            is_created - True(bool) if can create or update value by key,
+                or False if can not
             message - str
         '''
         key = str(key)
         value = str(value)
         if not is_valid_key(key):
-            return False
+            return False, 'invalid key'
         query = {
             'KEY': key,
             'VALUE': value
@@ -59,20 +62,21 @@ class Serdis():
             query['TTL'] = int(ttl)
         data_json = requests.post(self._address + 'set', json=query).json()
         return data_json['is_created'], data_json['message']
-    
+
     def lset(self, key: str, value: List[str], ttl: int = None) -> (bool):
         '''
         Method for setting lists of values (SET)
         ttl - live time in seconds
 
         Returns: Tuple of
-            is_created: True(bool) if can create or update list by key, or False if can not
+            is_created: True(bool) if can create or update list by key,
+                or False if can not
             message: (str) error or ok message
         '''
         key = str(key)
-        value = list(value)
+        value = list(map(str, value))
         if not is_valid_key(key):
-            return False
+            return False, 'invalid key'
         query = {
             'KEY': key,
             'VALUE': value
@@ -80,22 +84,24 @@ class Serdis():
         if ttl is not None:
             query['TTL'] = int(ttl)
 
-        data_json = requests.post(self._address + 'lset', json=query).json()['is_created']
+        data_json = requests.post(self._address + 'lset', json=query).json()
         return data_json['is_created'], data_json['message']
 
     def lget(self, key: str) -> (List[str]):
         '''
         Method for getting values by key (GET)
 
-        Returns: 
+        Returns:
         values lists(list of str) if key is available
         None if key is not available
         '''
         key = str(key)
         if not is_valid_key(key):
             return None
-        value = requests.post(self._address + 'lget', json={'KEY': key}).json()['value']
-        return value
+        data_json = requests.post(
+            self._address + 'lget', json={'KEY': key}
+        ).json()
+        return data_json['value'], data_json['message']
 
     def keys(self) -> (List[str]):
         '''
@@ -114,5 +120,9 @@ class Serdis():
             is_deleted: (bool) True if deleted and False if didn't deleted
             message: (str) ERROR or Ok message
         '''
-        data_json = requests.delete(self._address + 'del', json={'KEY': key}).json()
+        if not is_valid_key(key):
+            return False, 'invalid key'
+        data_json = requests.delete(
+            self._address + 'del', json={'KEY': key}
+        ).json()
         return data_json['is_deleted'], data_json['message']
