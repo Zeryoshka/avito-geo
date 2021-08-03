@@ -34,7 +34,7 @@ class Serdis():
         '''
         key = str(key)
         if not is_valid_key(key):
-            return None
+            return None, 'invalid key'
         data_json = requests.post(self._address + 'get', json={'KEY': key}).json()
         return data_json['value'], data_json['message']
     
@@ -50,7 +50,7 @@ class Serdis():
         key = str(key)
         value = str(value)
         if not is_valid_key(key):
-            return False
+            return False, 'invalid key'
         query = {
             'KEY': key,
             'VALUE': value
@@ -70,9 +70,9 @@ class Serdis():
             message: (str) error or ok message
         '''
         key = str(key)
-        value = list(value)
+        value = list(map(str, value))
         if not is_valid_key(key):
-            return False
+            return False, 'invalid key'
         query = {
             'KEY': key,
             'VALUE': value
@@ -80,7 +80,7 @@ class Serdis():
         if ttl is not None:
             query['TTL'] = int(ttl)
 
-        data_json = requests.post(self._address + 'lset', json=query).json()['is_created']
+        data_json = requests.post(self._address + 'lset', json=query).json()
         return data_json['is_created'], data_json['message']
 
     def lget(self, key: str) -> (List[str]):
@@ -94,8 +94,8 @@ class Serdis():
         key = str(key)
         if not is_valid_key(key):
             return None
-        value = requests.post(self._address + 'lget', json={'KEY': key}).json()['value']
-        return value
+        data_json = requests.post(self._address + 'lget', json={'KEY': key}).json()
+        return data_json['value'], data_json['message']
 
     def keys(self) -> (List[str]):
         '''
@@ -114,5 +114,7 @@ class Serdis():
             is_deleted: (bool) True if deleted and False if didn't deleted
             message: (str) ERROR or Ok message
         '''
+        if not is_valid_key(key):
+            return False, 'invalid key'
         data_json = requests.delete(self._address + 'del', json={'KEY': key}).json()
         return data_json['is_deleted'], data_json['message']
